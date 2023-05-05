@@ -76,14 +76,14 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   @override
   Future<void> signIn(UserEntity user) async {
     try {
-      if (user.email!.isNotEmpty && user.password!.isNotEmpty) {
+      if (user.email!.isNotEmpty || user.password!.isNotEmpty) {
         await firebaseAuth.signInWithEmailAndPassword(
             email: user.email!, password: user.password!);
       } else {
         print("Field can't be empty");
       }
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'not-found-user') {
+      if (e.code == 'user-not-found') {
         toast("User not found");
       } else if (e.code == 'wrong-password') {
         toast("Ivalid email or password");

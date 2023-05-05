@@ -1,14 +1,19 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:insta_clone/feature/presentation/cubit/cubit.dart';
+import 'package:insta_clone/feature/presentation/cubit/user/get_single_user/get_single_user_cubit.dart';
 import 'package:insta_clone/feature/presentation/pages/pages.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_clone/firebase_options.dart';
 import 'package:insta_clone/routers/on_generate_route.dart';
+import 'injection_container.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await di.init();
   runApp(const MyApp());
 }
 
@@ -17,15 +22,33 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Instagram Clone',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
-      onGenerateRoute: OnGenerateRoute.route,
-      initialRoute: "/",
-      routes: {
-        "/": (context) => true ? MainScreen() : SignInPage(),
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => di.sl<AuthCubit>()..appStarted(context)),
+        BlocProvider(create: (_) => di.sl<CredentialCubit>()),
+        BlocProvider(create: (_) => di.sl<GetSingleUserCubit>()),
+        BlocProvider(create: (_) => di.sl<UserCubit>()),
+      ],
+      child: MaterialApp(
+        title: 'Instagram Clone',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData.dark(),
+        onGenerateRoute: OnGenerateRoute.route,
+        initialRoute: "/",
+        routes: {
+          "/": (context) {
+            return BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, state) {
+                if (state is Authenticated) {
+                  return MainScreen(uid: state.uid);
+                } else {
+                  return const SignInPage();
+                }
+              },
+            );
+          },
+        },
+      ),
     );
   }
 }

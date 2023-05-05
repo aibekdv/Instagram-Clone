@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_clone/common/app_colors.dart';
 import 'package:insta_clone/common/sized_func.dart';
-import 'package:insta_clone/feature/presentation/pages/profile/edit_profile_page.dart';
+import 'package:insta_clone/feature/domain/entities/user/user_entity.dart';
+import 'package:insta_clone/feature/presentation/cubit/cubit.dart';
 import 'package:insta_clone/routers/route_consts.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  final UserEntity user;
+
+  const ProfilePage({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +26,9 @@ class ProfilePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text(
-                      "aibek7_official",
-                      style: TextStyle(
+                    Text(
+                      user.username!,
+                      style: const TextStyle(
                         color: AppColors.primaryColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -53,9 +57,9 @@ class ProfilePage extends StatelessWidget {
                       children: [
                         Column(
                           children: [
-                            const Text(
-                              "2",
-                              style: TextStyle(
+                            Text(
+                              "${user.totalPosts!.toInt()}",
+                              style: const TextStyle(
                                 color: AppColors.primaryColor,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -75,9 +79,9 @@ class ProfilePage extends StatelessWidget {
                         sizedHorizontal(15),
                         Column(
                           children: [
-                            const Text(
-                              "10",
-                              style: TextStyle(
+                            Text(
+                              "${user.totalFollowers!.toInt()}",
+                              style: const TextStyle(
                                 color: AppColors.primaryColor,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -97,9 +101,9 @@ class ProfilePage extends StatelessWidget {
                         sizedHorizontal(15),
                         Column(
                           children: [
-                            const Text(
-                              "15",
-                              style: TextStyle(
+                            Text(
+                              "${user.totalFollowing!.toInt()}",
+                              style: const TextStyle(
                                 color: AppColors.primaryColor,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -121,18 +125,18 @@ class ProfilePage extends StatelessWidget {
                   ],
                 ),
                 sizedVertical(10),
-                const Text(
-                  "Aibek Karataev",
-                  style: TextStyle(
+                Text(
+                  user.name ?? "",
+                  style: const TextStyle(
                     color: AppColors.primaryColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
                 sizedVertical(10),
-                const Text(
-                  "Bio",
-                  style: TextStyle(
+                Text(
+                  user.bio ?? "",
+                  style: const TextStyle(
                     color: AppColors.primaryColor,
                   ),
                 ),
@@ -143,7 +147,7 @@ class ProfilePage extends StatelessWidget {
                     crossAxisSpacing: 5,
                     mainAxisSpacing: 5,
                   ),
-                  itemCount: 16,
+                  itemCount: user.totalPosts!.toInt(),
                   shrinkWrap: true,
                   physics: const ScrollPhysics(),
                   itemBuilder: (context, index) {
@@ -215,14 +219,24 @@ _openBottomSheetModal(BuildContext context) {
                   color: AppColors.secondaryColor,
                 ),
                 sizedVertical(8),
-                const Padding(
-                  padding: EdgeInsets.only(left: 16.0),
-                  child: Text(
-                    "Logout",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                      color: AppColors.primaryColor,
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      BlocProvider.of<AuthCubit>(context).loggedOut();
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        RouteConsts.signIn,
+                        (route) => false,
+                      );
+                    },
+                    child: const Text(
+                      "Logout",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                        color: AppColors.primaryColor,
+                      ),
                     ),
                   ),
                 ),

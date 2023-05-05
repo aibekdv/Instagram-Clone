@@ -31,115 +31,117 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          ListTile(
-            leading: const CircleAvatar(
-              backgroundImage: AssetImage('assets/profile_default.jpg'),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ListTile(
+              leading: const CircleAvatar(
+                backgroundImage: AssetImage('assets/profile_default.jpg'),
+              ),
+              title: const Text(
+                "aibek7_official",
+                style: TextStyle(fontWeight: FontWeight.bold),
+                overflow: TextOverflow.ellipsis,
+              ),
+              trailing: GestureDetector(
+                onTap: () {
+                  _openBottomSheetModal(context);
+                },
+                child: const Icon(Icons.more_vert),
+              ),
             ),
-            title: const Text(
-              "aibek7_official",
-              style: TextStyle(fontWeight: FontWeight.bold),
-              overflow: TextOverflow.ellipsis,
+            sizedVertical(6),
+            Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * 0.30,
+              color: AppColors.secondaryColor,
             ),
-            trailing: GestureDetector(
-              onTap: () {
-                _openBottomSheetModal(context);
-              },
-              child: const Icon(Icons.more_vert),
-            ),
-          ),
-          sizedVertical(6),
-          Container(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.30,
-            color: AppColors.secondaryColor,
-          ),
-          sizedVertical(10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.favorite_outline,
-                          size: 25,
-                        ),
-                        sizedHorizontal(10),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, RouteConsts.commentPage);
-                          },
-                          child: const Icon(
-                            Feather.message_circle,
+            sizedVertical(10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.favorite_outline,
                             size: 25,
                           ),
-                        ),
-                        sizedHorizontal(10),
-                        const Icon(
-                          Feather.send,
-                          size: 25,
-                        ),
-                      ],
-                    ),
-                    const Icon(
-                      Icons.bookmark_border,
-                      size: 25,
-                    ),
-                  ],
-                ),
-                sizedVertical(10),
-                const Text(
-                  "3 likes",
-                  style: TextStyle(
-                    color: AppColors.primaryColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                sizedVertical(10),
-                Row(
-                  children: [
-                    const Text(
-                      "aibek7_official",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                          sizedHorizontal(10),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, RouteConsts.commentPage);
+                            },
+                            child: const Icon(
+                              Feather.message_circle,
+                              size: 25,
+                            ),
+                          ),
+                          sizedHorizontal(10),
+                          const Icon(
+                            Feather.send,
+                            size: 25,
+                          ),
+                        ],
                       ),
+                      const Icon(
+                        Icons.bookmark_border,
+                        size: 25,
+                      ),
+                    ],
+                  ),
+                  sizedVertical(10),
+                  const Text(
+                    "3 likes",
+                    style: TextStyle(
+                      color: AppColors.primaryColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
                     ),
-                    sizedHorizontal(10),
-                    const Text("some description"),
-                  ],
-                ),
-                sizedVertical(10),
-                const Text(
-                  "View all 10 comments",
-                  style: TextStyle(
-                    color: AppColors.darkGreyColor,
-                    fontSize: 14,
                   ),
-                ),
-                sizedVertical(10),
-                const Text(
-                  "24/04/2023",
-                  style: TextStyle(
-                    color: AppColors.darkGreyColor,
-                    fontSize: 14,
+                  sizedVertical(10),
+                  Row(
+                    children: [
+                      const Text(
+                        "aibek7_official",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      sizedHorizontal(10),
+                      const Text("some description"),
+                    ],
                   ),
-                )
-              ],
-            ),
-          )
-        ],
+                  sizedVertical(10),
+                  const Text(
+                    "View all 10 comments",
+                    style: TextStyle(
+                      color: AppColors.darkGreyColor,
+                      fontSize: 14,
+                    ),
+                  ),
+                  sizedVertical(10),
+                  const Text(
+                    "24/04/2023",
+                    style: TextStyle(
+                      color: AppColors.darkGreyColor,
+                      fontSize: 14,
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
