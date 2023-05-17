@@ -28,16 +28,15 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  cached_network_image: ^3.2.3
   cloud_firestore: ^4.5.2
   cupertino_icons: ^1.0.2
   equatable: ^2.0.5
   firebase_auth: ^4.4.2
   firebase_core: ^2.10.0
   firebase_storage: ^11.1.1
-
   flutter:
     sdk: flutter
-
   flutter_bloc: ^8.1.2
   flutter_icons: ^1.1.0
   flutter_svg: ^2.0.5

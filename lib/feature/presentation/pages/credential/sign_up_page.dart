@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:insta_clone/common/app_colors.dart';
 import 'package:insta_clone/common/firebase_consts.dart';
 import 'package:insta_clone/common/sized_func.dart';
@@ -10,6 +13,7 @@ import 'package:insta_clone/feature/presentation/pages/credential/sign_in_page.d
 import 'package:insta_clone/feature/presentation/pages/pages.dart';
 import 'package:insta_clone/feature/presentation/widgets/button_container_widget.dart';
 import 'package:insta_clone/feature/presentation/widgets/form_container_widget.dart';
+import 'package:insta_clone/feature/presentation/widgets/profile_image_widget.dart';
 import 'package:insta_clone/routers/route_consts.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -27,6 +31,25 @@ class _SignUpPageState extends State<SignUpPage> {
   final formKey = GlobalKey<FormState>();
 
   bool _isSignIn = false;
+  File? _imageFile;
+
+  Future selectImage() async {
+    try {
+      final pickedImage = await ImagePicker.platform.getImage(
+        source: ImageSource.gallery,
+      );
+
+      setState(() {
+        if (pickedImage != null) {
+          _imageFile = File(pickedImage.path);
+        } else {
+          print("Image file is not selected");
+        }
+      });
+    } catch (e) {
+      toast("Some error ocurred $e");
+    }
+  }
 
   @override
   void dispose() {
@@ -131,19 +154,24 @@ class _SignUpPageState extends State<SignUpPage> {
           Center(
             child: Stack(
               children: [
-                CircleAvatar(
-                  backgroundImage:
-                      const AssetImage("assets/profile_default.jpg"),
-                  backgroundColor: Colors.grey.withOpacity(.8),
-                  radius: 35,
+                SizedBox(
+                  width: 80,
+                  height: 80,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(40),
+                    child: profileWidget(image: _imageFile),
+                  ),
                 ),
-                const Positioned(
+                Positioned(
                   right: 0,
                   bottom: 0,
-                  child: Icon(
-                    Icons.add_a_photo,
-                    size: 20,
-                    color: AppColors.blueColor,
+                  child: GestureDetector(
+                    onTap: selectImage,
+                    child: const Icon(
+                      Icons.add_a_photo,
+                      size: 20,
+                      color: AppColors.blueColor,
+                    ),
                   ),
                 ),
               ],
@@ -214,6 +242,7 @@ class _SignUpPageState extends State<SignUpPage> {
             profileUrl: '',
             bio: '',
             name: '',
+            imageFile: _imageFile,
           ),
         )
         .then((value) => _clear());

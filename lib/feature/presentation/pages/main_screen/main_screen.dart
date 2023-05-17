@@ -49,6 +49,7 @@ class _MainScreenState extends State<MainScreen> {
             body: PageView(
               controller: pageController,
               onPageChanged: onChangedPage,
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 const HomePage(),
                 const SearchPage(),
@@ -79,7 +80,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(
-                      Ionicons.md_add_circle_outline,
+                      Ionicons.md_add_circle,
                       color: _currentIndex == 2
                           ? AppColors.blueColor
                           : AppColors.primaryColor,
@@ -87,7 +88,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(
-                      Icons.favorite_outline,
+                      Icons.favorite,
                       color: _currentIndex == 3
                           ? AppColors.blueColor
                           : AppColors.primaryColor,
@@ -95,7 +96,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(
-                      Icons.account_circle_outlined,
+                      Icons.account_circle,
                       color: _currentIndex == 4
                           ? AppColors.blueColor
                           : AppColors.primaryColor,

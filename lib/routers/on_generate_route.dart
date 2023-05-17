@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insta_clone/common/app_colors.dart';
+import 'package:insta_clone/feature/domain/entities/user/user_entity.dart';
 import 'package:insta_clone/feature/presentation/pages/pages.dart';
 import 'package:insta_clone/feature/presentation/pages/post/comment/comment_page.dart';
 
@@ -11,7 +12,13 @@ class OnGenerateRoute {
 
     switch (settings.name) {
       case RouteConsts.editProfilePage:
-        return routeBuilder(const EditProfilePage());
+        if (args is UserEntity) {
+          return routeBuilder(EditProfilePage(
+            currentUser: args,
+          ));
+        } else {
+          return routeBuilder(const ErrorPage());
+        }
 
       case RouteConsts.updatePostPage:
         return routeBuilder(const UpdatePostPage());

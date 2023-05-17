@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -9,19 +10,18 @@ part 'get_single_user_state.dart';
 
 class GetSingleUserCubit extends Cubit<GetSingleUserState> {
   final GetSingleUserUseCase getSingleUserUseCase;
-
   GetSingleUserCubit({required this.getSingleUserUseCase})
       : super(GetSingleUserInitial());
 
   Future<void> getSingleUser({required String uid}) async {
     emit(GetSingleUserLoding());
     try {
-      final streamResponse = getSingleUserUseCase(uid);
-      streamResponse.listen(
-        (users) {
-          emit(GetSingleUserLoaded(user: users.first));
-        },
-      );
+      final streamResponse = getSingleUserUseCase.call(uid);
+      streamResponse.listen((users) {
+        if (users.isNotEmpty) {
+          emit(GetSingleUserLoaded(user: users[0]));
+        }
+      });
     } on SocketException catch (_) {
       emit(GetSingleUserFailure());
     } catch (_) {

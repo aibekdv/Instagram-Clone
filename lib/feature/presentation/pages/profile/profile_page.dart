@@ -4,6 +4,7 @@ import 'package:insta_clone/common/app_colors.dart';
 import 'package:insta_clone/common/sized_func.dart';
 import 'package:insta_clone/feature/domain/entities/user/user_entity.dart';
 import 'package:insta_clone/feature/presentation/cubit/cubit.dart';
+import 'package:insta_clone/feature/presentation/widgets/profile_image_widget.dart';
 import 'package:insta_clone/routers/route_consts.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -36,7 +37,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        _openBottomSheetModal(context);
+                        _openBottomSheetModal(context, user);
                       },
                       child: const Icon(Icons.menu),
                     ),
@@ -47,11 +48,13 @@ class ProfilePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.grey.withOpacity(.4),
-                      backgroundImage:
-                          const AssetImage("assets/profile_default.jpg"),
-                      radius: 35,
+                    SizedBox(
+                      width: 80,
+                      height: 80,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(40),
+                        child: profileWidget(imageUrl: user.profileUrl),
+                      ),
                     ),
                     Row(
                       children: [
@@ -165,7 +168,7 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-_openBottomSheetModal(BuildContext context) {
+_openBottomSheetModal(BuildContext context, UserEntity user) {
   return showModalBottomSheet(
     context: context,
     builder: (context) {
@@ -201,7 +204,8 @@ _openBottomSheetModal(BuildContext context) {
                   padding: const EdgeInsets.only(left: 16.0),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, RouteConsts.editProfilePage);
+                      Navigator.pushNamed(context, RouteConsts.editProfilePage,
+                          arguments: user);
                     },
                     child: const Text(
                       "Edit profile",
