@@ -144,6 +144,57 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 sizedVertical(15),
+                const Divider(),
+                sizedVertical(15),
+                if (user.totalPosts! > 0)
+                  Row(
+                    children: const [
+                      Icon(
+                        Icons.apps_outlined,
+                        size: 20,
+                      ),
+                      Text(
+                        "Posts",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                sizedVertical(15),
+                if (user.totalPosts == 0)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 60,
+                            height: 60,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                border: Border.all(color: Colors.white)),
+                            child: const Icon(
+                              Icons.camera_alt_outlined,
+                              size: 30,
+                              color: Colors.white,
+                            ),
+                          ),
+                          sizedVertical(15),
+                          const Text(
+                            "No Posts yet",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,

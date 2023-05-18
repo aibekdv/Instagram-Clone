@@ -4,8 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:insta_clone/common/firebase_consts.dart';
-import 'package:insta_clone/feature/data/models/user/user_model.dart';
-import 'package:insta_clone/feature/domain/entities/user/user_entity.dart';
+import 'package:insta_clone/feature/data/models/models.dart';
+import 'package:insta_clone/feature/domain/entities/entities.dart';
 import 'package:uuid/uuid.dart';
 
 import 'remote_data_source.dart';
@@ -21,6 +21,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     required this.firebaseAuth,
   });
 
+  // USER
   Future<void> createUserWithImage(UserEntity user, String profileUrl) async {
     final userCollection = firestore.collection(FirebaseConsts.users);
 
@@ -218,5 +219,165 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     final uploadTask = await ref.putFile(file!);
 
     return await uploadTask.ref.getDownloadURL();
+  }
+
+  // POST
+  @override
+  Future<void> createPost(PostEntity post) async {
+    final postCollection = firestore.collection(FirebaseConsts.posts);
+
+    final newPost = PostModel(
+      username: post.username,
+      createAt: post.createAt,
+      creatorUid: post.creatorUid,
+      description: post.description,
+      likes: [],
+      postId: post.postId,
+      postImageUrl: post.postImageUrl,
+      totalComments: 0,
+      totalLikes: 0,
+      userProfileUrl: post.userProfileUrl,
+    ).toJson();
+
+    try {
+      final postDocRef = await postCollection.doc(post.postId).get();
+
+      if (!postDocRef.exists) {
+        postCollection.doc(post.postId).set(newPost);
+      } else {
+        postCollection.doc(post.postId).update(newPost);
+      }
+    } catch (e) {
+      print("some error: $e");
+    }
+  }
+
+  @override
+  Future<void> deletePost(PostEntity post) async {
+    final postCollection = firestore.collection(FirebaseConsts.posts);
+
+    try {
+      await postCollection.doc(post.postId).delete();
+    } catch (e) {
+      print("some error: $e");
+    }
+  }
+
+  @override
+  Future<void> likePost(PostEntity post) async {
+    final postCollection = firestore.collection(FirebaseConsts.posts);
+    final currentUid = await getCurrentUid();
+    final postRef = await postCollection.doc(post.postId).get();
+
+    if (postRef.exists) {
+      List likes = postRef.get('likes');
+      final totalLikes = postRef.get('totalLikes');
+
+      if (likes.contains(currentUid)) {
+        postCollection.doc(post.postId).update({
+          "likes": FieldValue.arrayRemove([currentUid]),
+          "totalLikes": totalLikes - 1,
+        });
+      } else {
+        postCollection.doc(post.postId).update({
+          "likes": FieldValue.arrayUnion([currentUid]),
+          "totalLikes": totalLikes + 1,
+        });
+      }
+    }
+  }
+
+  @override
+  Stream<List<PostEntity>> readPosts(PostEntity post) {
+    final postCollection = firestore.collection(FirebaseConsts.posts).orderBy(
+          "createAt",
+          descending: true,
+        );
+
+    return postCollection.snapshots().map(
+          (querySnapshot) => querySnapshot.docs
+              .map(
+                (e) => PostModel.fromSnapshot(e),
+              )
+              .toList(),
+        );
+  }
+
+  @override
+  Future<void> updatePost(PostEntity post) async {
+    final postCollection = firestore.collection(FirebaseConsts.posts);
+
+    Map<String, dynamic> postInfo = {};
+
+    if (post.description != null && post.description != '') {
+      postInfo['description'] = post.description;
+    }
+    if (post.postImageUrl != null && post.postImageUrl != '') {
+      postInfo['postImageUrl'] = post.postImageUrl;
+    }
+
+    postCollection.doc(post.postId).update(postInfo);
+  }
+
+  // COMMENTS
+  @override
+  Future<void> createComment(CommentEntity comment) {
+    // TODO: implement createComment
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteComment(CommentEntity comment) {
+    // TODO: implement deleteComment
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> likeComment(CommentEntity comment) {
+    // TODO: implement likeComment
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<List<CommentEntity>> readComments(String postId) {
+    // TODO: implement readComments
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateComment(CommentEntity comment) {
+    // TODO: implement updateComment
+    throw UnimplementedError();
+  }
+
+  // REPLIES
+  @override
+  Future<void> createReplay(ReplayEntity replay) {
+    // TODO: implement createReplay
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteReplay(ReplayEntity replay) {
+    // TODO: implement deleteReplay
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> likeReplay(ReplayEntity replay) {
+    // TODO: implement likeReplay
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<List<ReplayEntity>> readReplays(ReplayEntity replay) {
+    // TODO: implement readReplays
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateReplay(ReplayEntity replay) {
+    // TODO: implement updateReplay
+    throw UnimplementedError();
   }
 }

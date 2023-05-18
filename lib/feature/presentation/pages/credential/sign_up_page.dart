@@ -231,7 +231,8 @@ class _SignUpPageState extends State<SignUpPage> {
         .signUpUser(
           user: UserEntity(
             email: _emailController.text,
-            username: _userNameController.text,
+            username:
+                _userNameController.text.replaceAll(' ', '').toLowerCase(),
             password: _passwordController.text,
             totalFollowers: 0,
             totalFollowing: 0,
