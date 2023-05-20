@@ -8,3 +8,16 @@ abstract class PostState extends Equatable {
 }
 
 class PostInitial extends PostState {}
+
+class PostLoading extends PostState {}
+
+class PostLoaded extends PostState {
+  final List<PostEntity> posts;
+
+  const PostLoaded({required this.posts});
+
+  @override
+  List<Object> get props => [posts];
+}
+
+class PostFailure extends PostState {}

@@ -13,34 +13,38 @@ import 'package:insta_clone/feature/presentation/cubit/user/get_single_user/get_
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  // Cubits
-  sl.registerFactory(
-    () => AuthCubit(
-      isSignInUseCase: sl(),
-      signOutUseCase: sl(),
-      getCurrentUidUseCase: sl(),
-    ),
-  );
+  // AUTH CUBIT
+  sl.registerFactory(() => AuthCubit(
+        isSignInUseCase: sl(),
+        signOutUseCase: sl(),
+        getCurrentUidUseCase: sl(),
+      ));
 
-  sl.registerFactory(
-    () => UserCubit(
-      getUsersUseCase: sl(),
-      updateUserUseCase: sl(),
-    ),
-  );
+  // USER CUBIT
+  sl.registerFactory(() => UserCubit(
+        getUsersUseCase: sl(),
+        updateUserUseCase: sl(),
+      ));
 
-  sl.registerFactory(
-    () => CredentialCubit(
-      signInUseCase: sl(),
-      signUpUseCase: sl(),
-    ),
-  );
+  // CREDENTIAL CUBIT
+  sl.registerFactory(() => CredentialCubit(
+        signInUseCase: sl(),
+        signUpUseCase: sl(),
+      ));
 
-  sl.registerFactory(
-    () => GetSingleUserCubit(getSingleUserUseCase: sl()),
-  );
+  // GET_SINGLE_USER CUBIT
+  sl.registerFactory(() => GetSingleUserCubit(getSingleUserUseCase: sl()));
 
-  // Usecases
+  // POST CUBIT
+  sl.registerFactory(() => PostCubit(
+        createPostUseCase: sl(),
+        deletePostUseCase: sl(),
+        updatePostUseCase: sl(),
+        readPostsUseCase: sl(),
+        likePostUseCase: sl(),
+      ));
+
+  // USER USECASES
   sl.registerLazySingleton(() => SignInUseCase(repository: sl()));
   sl.registerLazySingleton(() => SignUpUseCase(repository: sl()));
   sl.registerLazySingleton(() => SignOutUseCase(repository: sl()));
@@ -50,7 +54,30 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetUsersUseCase(repository: sl()));
   sl.registerLazySingleton(() => GetSingleUserUseCase(repository: sl()));
   sl.registerLazySingleton(() => UpdateUserUseCase(repository: sl()));
+
+  // CLOUD STORAGE USECASE
   sl.registerLazySingleton(() => UploadImageToStorageUsecase(repository: sl()));
+
+  // POST USECASES
+  sl.registerLazySingleton(() => CreatePostUseCase(repository: sl()));
+  sl.registerLazySingleton(() => DeletePostUseCase(repository: sl()));
+  sl.registerLazySingleton(() => LikePostUseCase(repository: sl()));
+  sl.registerLazySingleton(() => ReadPostsUseCase(repository: sl()));
+  sl.registerLazySingleton(() => UpdatePostUseCase(repository: sl()));
+
+  // COMMENT USECASES
+  sl.registerLazySingleton(() => CreateCommentUseCase(repository: sl()));
+  sl.registerLazySingleton(() => DeleteCommentUseCase(repository: sl()));
+  sl.registerLazySingleton(() => UpdateCommentUseCase(repository: sl()));
+  sl.registerLazySingleton(() => LikeCommentUseCase(repository: sl()));
+  sl.registerLazySingleton(() => ReadCommentsUseCase(repository: sl()));
+
+  // REPLY USECASES
+  sl.registerLazySingleton(() => CreateReplayUseCase(repository: sl()));
+  sl.registerLazySingleton(() => DeleteReplayUseCase(repository: sl()));
+  sl.registerLazySingleton(() => UpdateReplayUseCase(repository: sl()));
+  sl.registerLazySingleton(() => LikeReplayUseCase(repository: sl()));
+  sl.registerLazySingleton(() => ReadReplaysUseCase(repository: sl()));
 
   // Repository
   sl.registerLazySingleton<FirebaseRepository>(
