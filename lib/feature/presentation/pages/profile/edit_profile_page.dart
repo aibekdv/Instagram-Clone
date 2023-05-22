@@ -177,13 +177,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
   updateUserProfile(String profileUrl) {
     BlocProvider.of<UserCubit>(context)
         .updateUser(
-            user: UserEntity(
-          uid: widget.currentUser.uid,
-          username: _userNameController.text,
-          bio: _bioController.text,
-          name: _nameController.text,
-          profileUrl: profileUrl,
-        ))
+          user: UserEntity(
+            uid: widget.currentUser.uid,
+            username: _userNameController.text,
+            bio: _bioController.text,
+            name: _nameController.text,
+            profileUrl: profileUrl,
+          ),
+        )
         .then((value) => _clear());
   }
 

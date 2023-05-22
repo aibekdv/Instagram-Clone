@@ -177,6 +177,10 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       userInformation['name'] = user.name;
     }
 
+    if (user.username != '' && user.username != null) {
+      userInformation['username'] = user.username;
+    }
+
     if (user.profileUrl != '' && user.profileUrl != null) {
       userInformation['profileUrl'] = user.profileUrl;
     }
