@@ -9,13 +9,13 @@ class FirebaseConsts {
   static const String comment = 'comment';
 }
 
-void toast(String msg) {
+void toast(String msg, {bool isError = false}) {
   Fluttertoast.showToast(
     msg: msg,
     toastLength: Toast.LENGTH_SHORT,
     gravity: ToastGravity.BOTTOM,
     timeInSecForIosWeb: 1,
-    backgroundColor: AppColors.blueColor,
+    backgroundColor: isError ? Colors.red : AppColors.blueColor,
     textColor: Colors.white,
     fontSize: 16.0,
   );
