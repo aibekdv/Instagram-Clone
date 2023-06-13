@@ -8,7 +8,6 @@ import 'package:insta_clone/feature/data/repositories/firebase_repository_impl.d
 import 'package:insta_clone/feature/domain/repositories/firebase_repository.dart';
 import 'package:insta_clone/feature/domain/usecases/usecases.dart';
 import 'package:insta_clone/feature/presentation/cubit/cubit.dart';
-import 'package:insta_clone/feature/presentation/cubit/user/get_single_user/get_single_user_cubit.dart';
 
 final sl = GetIt.instance;
 

@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_clone/common/app_colors.dart';
+import 'package:insta_clone/common/firebase_consts.dart';
 import 'package:insta_clone/common/sized_func.dart';
 import 'package:insta_clone/feature/domain/entities/entities.dart';
+import 'package:insta_clone/feature/presentation/cubit/post/post_cubit.dart';
 import 'package:insta_clone/feature/presentation/widgets/profile_image_widget.dart';
 import 'package:insta_clone/routers/route_consts.dart';
+import 'package:intl/intl.dart';
+import 'package:unicons/unicons.dart';
+import 'dart:math' as math;
 
 class SinglePostCardWidget extends StatelessWidget {
   final PostEntity post;
+  final UserEntity currentUser;
 
   const SinglePostCardWidget({
     super.key,
     required this.post,
+    required this.currentUser,
   });
 
   @override
@@ -34,7 +41,19 @@ class SinglePostCardWidget extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           trailing: GestureDetector(
-            onTap: () => _openBottomSheetModal(context),
+            onTap: () {
+              if (currentUser.uid == post.creatorUid) {
+                _openBottomSheetModal(context, () {
+                  BlocProvider.of<PostCubit>(context).deletePost(
+                    post: post,
+                  );
+                  Navigator.pop(context);
+                  toast("The current post is deleted!", isError: true);
+                });
+              } else {
+                toast("This is not your post", isError: true);
+              }
+            },
             child: const Icon(Icons.more_vert),
           ),
         ),
@@ -68,19 +87,22 @@ class SinglePostCardWidget extends StatelessWidget {
                           Navigator.pushNamed(context, RouteConsts.commentPage);
                         },
                         child: const Icon(
-                          Feather.message_circle,
+                          UniconsLine.comment,
                           size: 25,
                         ),
                       ),
                       sizedHorizontal(10),
-                      const Icon(
-                        Feather.send,
-                        size: 25,
+                      Transform.rotate(
+                        angle: 360 * math.pi / 200,
+                        child: const Icon(
+                          UniconsLine.message,
+                          size: 25,
+                        ),
                       ),
                     ],
                   ),
                   const Icon(
-                    Icons.bookmark_border,
+                    UniconsLine.bookmark,
                     size: 25,
                   ),
                 ],
@@ -118,12 +140,13 @@ class SinglePostCardWidget extends StatelessWidget {
               ),
               sizedVertical(10),
               Text(
-                "${post.createAt}",
+                DateFormat("dd/MMM/yyy").format(post.createAt!.toDate()),
                 style: const TextStyle(
                   color: AppColors.darkGreyColor,
                   fontSize: 14,
                 ),
-              )
+              ),
+              sizedVertical(10),
             ],
           ),
         )
@@ -131,7 +154,7 @@ class SinglePostCardWidget extends StatelessWidget {
     );
   }
 
-  _openBottomSheetModal(BuildContext context) {
+  _openBottomSheetModal(BuildContext context, VoidCallback deletePost) {
     return showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -168,7 +191,10 @@ class SinglePostCardWidget extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(
-                            context, RouteConsts.updatePostPage);
+                          context,
+                          RouteConsts.updatePostPage,
+                          arguments: post,
+                        );
                       },
                       child: const Text(
                         "Edit post",
@@ -186,14 +212,17 @@ class SinglePostCardWidget extends StatelessWidget {
                     color: AppColors.secondaryColor,
                   ),
                   sizedVertical(8),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 16.0),
-                    child: Text(
-                      "Delete post",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18,
-                        color: AppColors.primaryColor,
+                  GestureDetector(
+                    onTap: deletePost,
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 16.0),
+                      child: Text(
+                        "Delete post",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                          color: AppColors.primaryColor,
+                        ),
                       ),
                     ),
                   ),

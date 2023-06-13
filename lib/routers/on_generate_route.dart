@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insta_clone/common/app_colors.dart';
+import 'package:insta_clone/feature/domain/entities/posts/post_entity.dart';
 import 'package:insta_clone/feature/domain/entities/user/user_entity.dart';
 import 'package:insta_clone/feature/presentation/pages/pages.dart';
 import 'package:insta_clone/feature/presentation/pages/post/comment/comment_page.dart';
@@ -21,7 +22,11 @@ class OnGenerateRoute {
         }
 
       case RouteConsts.updatePostPage:
-        return routeBuilder(const UpdatePostPage());
+        if (args is PostEntity) {
+          return routeBuilder(UpdatePostPage(post: args));
+        } else {
+          return routeBuilder(const ErrorPage());
+        }
 
       case RouteConsts.commentPage:
         return routeBuilder(const CommentPage());

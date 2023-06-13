@@ -78,7 +78,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(
-                      Icons.add_to_queue,
+                      CupertinoIcons.add_circled_solid,
                       color: _currentIndex == 2
                           ? AppColors.blueColor
                           : AppColors.primaryColor,

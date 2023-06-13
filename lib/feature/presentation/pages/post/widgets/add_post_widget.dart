@@ -166,6 +166,7 @@ class _AddPostWidgetState extends State<AddPostWidget> {
         .call(imageFile!, true, "posts")
         .then((imageUrl) {
       createSubmitPost(image: imageUrl);
+      Navigator.pushNamed(context, '/');
     });
   }
 

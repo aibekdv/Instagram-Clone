@@ -5,7 +5,6 @@ import 'package:insta_clone/common/app_colors.dart';
 import 'package:insta_clone/common/firebase_consts.dart';
 import 'package:insta_clone/common/sized_func.dart';
 import 'package:insta_clone/feature/presentation/cubit/cubit.dart';
-import 'package:insta_clone/feature/presentation/pages/credential/sign_up_page.dart';
 import 'package:insta_clone/feature/presentation/pages/pages.dart';
 import 'package:insta_clone/feature/presentation/widgets/button_container_widget.dart';
 import 'package:insta_clone/feature/presentation/widgets/form_container_widget.dart';

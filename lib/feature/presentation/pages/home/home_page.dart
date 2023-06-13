@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,6 +7,7 @@ import 'package:insta_clone/feature/domain/entities/entities.dart';
 import 'package:insta_clone/feature/presentation/cubit/post/post_cubit.dart';
 // import 'package:insta_clone/routers/route_consts.dart';
 import 'package:insta_clone/injection_container.dart' as di;
+import 'package:unicons/unicons.dart';
 
 import 'widgets/single_post_card.dart';
 
@@ -29,7 +31,7 @@ class HomePage extends StatelessWidget {
             child: IconButton(
               onPressed: () {},
               splashRadius: 25,
-              icon: const Icon(Icons.facebook),
+              icon: const Icon(UniconsLine.facebook_messenger_alt),
             ),
           )
         ],
