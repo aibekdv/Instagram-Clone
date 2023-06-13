@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insta_clone/common/app_colors.dart';
-import 'package:insta_clone/common/sized_func.dart';
-import 'package:insta_clone/feature/domain/entities/posts/post_entity.dart';
+import 'package:insta_clone/feature/domain/entities/entities.dart';
 import 'package:insta_clone/feature/presentation/cubit/post/post_cubit.dart';
 // import 'package:insta_clone/routers/route_consts.dart';
 import 'package:insta_clone/injection_container.dart' as di;
@@ -12,7 +10,8 @@ import 'package:insta_clone/injection_container.dart' as di;
 import 'widgets/single_post_card.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final UserEntity currentUser;
+  const HomePage({super.key, required this.currentUser});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +29,7 @@ class HomePage extends StatelessWidget {
             child: IconButton(
               onPressed: () {},
               splashRadius: 25,
-              icon: const Icon(MaterialCommunityIcons.facebook_messenger),
+              icon: const Icon(Icons.facebook),
             ),
           )
         ],
@@ -56,6 +55,7 @@ class HomePage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return SinglePostCardWidget(
                     post: postState.posts[index],
+                    currentUser: currentUser,
                   );
                 },
               );

@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:insta_clone/common/app_colors.dart';
 import 'package:insta_clone/feature/presentation/cubit/user/user.dart';
 import 'package:insta_clone/feature/presentation/pages/pages.dart';
@@ -51,7 +49,7 @@ class _MainScreenState extends State<MainScreen> {
               onPageChanged: onChangedPage,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                const HomePage(),
+                HomePage(currentUser: state.user),
                 const SearchPage(),
                 AddPostPage(currentUser: state.user),
                 const ActivityPage(),
@@ -64,7 +62,7 @@ class _MainScreenState extends State<MainScreen> {
                 items: [
                   BottomNavigationBarItem(
                     icon: Icon(
-                      MaterialCommunityIcons.home_variant,
+                      Icons.home_rounded,
                       color: _currentIndex == 0
                           ? AppColors.blueColor
                           : AppColors.primaryColor,
@@ -72,7 +70,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(
-                      Ionicons.md_search,
+                      Icons.search,
                       color: _currentIndex == 1
                           ? AppColors.blueColor
                           : AppColors.primaryColor,
@@ -80,7 +78,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(
-                      Ionicons.md_add_circle,
+                      Icons.add_to_queue,
                       color: _currentIndex == 2
                           ? AppColors.blueColor
                           : AppColors.primaryColor,
