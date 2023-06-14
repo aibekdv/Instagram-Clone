@@ -5,6 +5,7 @@ import 'package:insta_clone/feature/presentation/pages/pages.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_clone/firebase_options.dart';
 import 'package:insta_clone/routers/on_generate_route.dart';
+import 'feature/domain/entities/entities.dart';
 import 'injection_container.dart' as di;
 
 void main() async {
@@ -27,11 +28,17 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => di.sl<CredentialCubit>()),
         BlocProvider(create: (_) => di.sl<GetSingleUserCubit>()),
         BlocProvider(create: (_) => di.sl<UserCubit>()),
+        BlocProvider(
+          create: (context) => di.sl<PostCubit>()
+            ..getPosts(
+              post: const PostEntity(),
+            ),
+        ),
       ],
       child: MaterialApp(
         title: 'Instagram Clone',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark(),
+        theme: ThemeData.dark(useMaterial3: true),
         onGenerateRoute: OnGenerateRoute.route,
         initialRoute: "/",
         routes: {

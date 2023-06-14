@@ -48,7 +48,7 @@ class SinglePostCardWidget extends StatelessWidget {
                     post: post,
                   );
                   Navigator.pop(context);
-                  toast("The current post is deleted!", isError: true);
+                  toast("The current post is deleted!");
                 });
               } else {
                 toast("This is not your post", isError: true);
@@ -159,7 +159,7 @@ class SinglePostCardWidget extends StatelessWidget {
       context: context,
       builder: (context) {
         return Container(
-          height: 160,
+          height: 180,
           color: AppColors.backgroundColor.withOpacity(.4),
           child: SingleChildScrollView(
             child: Padding(

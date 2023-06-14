@@ -31,6 +31,7 @@ class _AddPostWidgetState extends State<AddPostWidget> {
   Future selectImage() async {
     try {
       final pickedFile =
+          // ignore: invalid_use_of_visible_for_testing_member
           await ImagePicker.platform.getImage(source: ImageSource.gallery);
 
       setState(() {
@@ -166,7 +167,8 @@ class _AddPostWidgetState extends State<AddPostWidget> {
         .call(imageFile!, true, "posts")
         .then((imageUrl) {
       createSubmitPost(image: imageUrl);
-      Navigator.pushNamed(context, '/');
+
+      toast('Current post uploaded!');
     });
   }
 
